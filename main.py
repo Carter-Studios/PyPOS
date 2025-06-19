@@ -6,7 +6,7 @@ from rich.align import Align
 from rich.prompt import Prompt  # Import Prompt for better input handling
 
 # Assuming you have another file named PyCom.py with the `new` function
-from PyCom import new 
+from PyCom import *
 
 # --- Setup ---
 console = Console()
@@ -21,12 +21,13 @@ def main():
         
         welcome_panel = Panel(
             "Welcome to PyPOS\n"
+            "Enter 'pos' to start POS mode.\n"
             "Enter 'new' to add an item.\n"
             "Enter 'exit' to quit.",
             title="[bold cyan]Main Menu[/bold cyan]",
             border_style="green"
         )
-        
+
         console.print(Align.center(welcome_panel))
 
         # --- Get User Command ---
@@ -43,6 +44,22 @@ def main():
         elif command == "exit":
             console.print("\n[bold yellow]Shutting down. Goodbye![/bold yellow]")
             break  # This exits the 'while True' loop
+        
+        elif command == "pos":
+            console.clear()
+            console.print("[red]Please wait...[/red]")
+
+            while True:
+                pos_panel = Panel(
+                    "POS mode is enabled.\nPlease enter product code\nEnter 'exit' to quit.",
+                    title="[bold green]POS Mode[/bold green]",
+                    border_style="green"
+                )
+            console.clear()
+            console.print(Align.center(pos_panel))
+
+            pos_prompt = Prompt.ask("\nEnter command").lower().strip()
+            
 
         else:
             # Handle unknown commands

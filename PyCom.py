@@ -2,6 +2,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.align import Align
 from rich.padding import Padding
+from rich.prompt import Prompt
 
 # It's best to define the console once at the top level
 console = Console()
@@ -74,6 +75,36 @@ def new():
     except IOError as e:
         # Handle potential file writing errors
         console.print(f"[bold red]Error:[/bold red] Could not write to file. {e}")
+
+def find_product_price(target_code):
+    """
+    Searches for a product code in 'products.txt' and returns its code and price.
+    """
+    try:
+        with open('codes.txt', 'r', encoding='utf-8') as file:
+            for line in file:
+                # 1. Split the line into two parts at the comma
+                parts = line.strip().split(',')
+
+                # 2. Check if the line has exactly two parts (code and price)
+                if len(parts) == 2:
+                    code_from_file = parts[0]
+                    price_from_file = parts[1]
+
+                    # 3. Compare the code from the file to the one we're looking for
+                    if code_from_file == target_code:
+                        # 4. Found it! Convert price to a float and return both.
+                        return code_from_file, float(price_from_file)
+
+    except FileNotFoundError:
+        print("Error: 'products.txt' not found in the current directory.")
+        return None, None
+    except ValueError:
+        print(f"Error: Invalid price format for code {target_code}.")
+        return None, None
+
+    # 5. If the loop finishes, the code was not found.
+    return None, None
 
 if __name__ == "__main__":
 	new()
