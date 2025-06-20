@@ -106,5 +106,34 @@ def find_product_price(target_code):
     # 5. If the loop finishes, the code was not found.
     return None, None
 
+def save_user_input_to_file(text_from_user):
+    with open('cart.txt', 'a', encoding='utf-8') as file:
+        file.write(text_from_user + '\n')
+
+def subtotal():
+    total_sum = 0.0  # Start with a float to handle decimals
+    try:
+        with open("cart.txt", 'r', encoding='utf-8') as file:
+            # Loop through each line in the file
+            for line in file:
+                # 1. Strip whitespace and convert the line (string) to a float
+                #    We use a nested try-except to gracefully skip any non-numeric lines
+                try:
+                    number = float(line.strip())
+                    # 2. Add the number to our running total
+                    total_sum += number
+                except ValueError:
+                    # This line is not a valid number, so we print a warning and skip it
+                    print(f"Warning: Could not convert line to a number. Skipping: '{line.strip()}'")
+
+    except FileNotFoundError:
+        return 0.0 # Return 0 if the file doesn't exist
+
+    return total_sum
+
+def clear_cart():
+    with open("cart.txt", "w",) as file:
+        pass
+
 if __name__ == "__main__":
 	new()

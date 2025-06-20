@@ -48,7 +48,7 @@ def main():
         elif command == "pos":
             while True:
                 pos_panel = Panel(
-                    "POS mode is enabled.\nPlease enter product code\nEnter 'exit' to quit.",
+                    "POS mode is enabled.\nPlease enter product code\nEnter 'subtotal' to total cart\nEnter 'clear' to clear cart\nEnter 'exit' to quit.",
                     title="[bold green]POS Mode[/bold green]",
                     border_style="green"
                 )
@@ -58,10 +58,23 @@ def main():
                 pos_prompt = Prompt.ask("\nEnter command").lower().strip()
             
                 if pos_prompt == "exit":
-                    console.print("[bold yellow]Shutting Down. Goodbye![/bold yellow]")
+                    console.print("[bold yellow]Exiting POS mode...[/bold yellow]")
+                    time.sleep(1)
+                    break
+                elif pos_prompt == "subtotal":
+                    subtotal()
+                elif pos_prompt == "clear":
+                    clear_cart()
                 else:
-                    find_product_price(pos_prompt)
-
+                    found_code, found_price = find_product_price(pos_prompt)
+                    added_item = Panel(
+                        f"Added item {found_code} to cart.",
+                        title="[bold green]Success[/bold green]",
+                        border_style="green"
+                    )
+                    save_user_input_to_file(found_price)
+                    console.print(Align.center(added_item))
+                    time.sleep(2)
         else:
             # Handle unknown commands
             console.print(f"\n[bold red]Error:[/bold red] Unknown command '[yellow]{command}[/yellow]'.")
