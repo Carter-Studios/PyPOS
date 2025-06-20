@@ -46,20 +46,21 @@ def main():
             break  # This exits the 'while True' loop
         
         elif command == "pos":
-            console.clear()
-            console.print("[red]Please wait...[/red]")
-
             while True:
                 pos_panel = Panel(
                     "POS mode is enabled.\nPlease enter product code\nEnter 'exit' to quit.",
                     title="[bold green]POS Mode[/bold green]",
                     border_style="green"
                 )
-            console.clear()
-            console.print(Align.center(pos_panel))
+                console.clear()
+                console.print(Align.center(pos_panel))
 
-            pos_prompt = Prompt.ask("\nEnter command").lower().strip()
+                pos_prompt = Prompt.ask("\nEnter command").lower().strip()
             
+                if pos_prompt == "exit":
+                    console.print("[bold yellow]Shutting Down. Goodbye![/bold yellow]")
+                else:
+                    find_product_price(pos_prompt)
 
         else:
             # Handle unknown commands
